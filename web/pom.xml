@@ -5,8 +5,7 @@
     <parent>
         <groupId>training.taylor.time-tracker</groupId>
         <artifactId>time-tracker-parent</artifactId>
-        <version>1.0-SNAPSHOT</version>
-        <relativePath>../pom.xml</relativePath>
+        <version>1.0-SNAPSHOT</version>        
     </parent>
 
     <artifactId>timetrackerweb</artifactId>
