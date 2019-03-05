@@ -11,13 +11,13 @@ pipeline {
         }
         stage('Build') {
             steps {
-			        echo 'Building..'		
-			        bat 'mvn clean package' 
+			  echo 'Building..'		
+			  bat 'mvn clean package' 
 		          bat "docker stop demo-webapp-staging demo-webapp-production"
 		          bat "docker rm demo-webapp-staging demo-webapp-production"
-			        bat "docker image build -t tapojitb/demo-webapp:${env.BUILD_ID} ."		    	
-		    	    bat "docker container run -d  --name demo-webapp-staging -p 8181:8080 tapojitb/demo-webapp:${env.BUILD_ID}"		     	
-		    	    bat "docker container run -d  --name demo-webapp-production -p 8282:8080 tapojitb/demo-webapp:${env.BUILD_ID}"
+			  bat "docker image build -t tapojitb/demo-webapp:${env.BUILD_ID} ."		    	
+		    	  bat "docker container run -d  --name demo-webapp-staging -p 8383:8080 tapojitb/demo-webapp:${env.BUILD_ID}"		     	
+		    	  bat "docker container run -d  --name demo-webapp-production -p 8484:8080 tapojitb/demo-webapp:${env.BUILD_ID}"
             }
             post {
                 success {
