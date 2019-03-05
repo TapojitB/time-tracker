@@ -11,13 +11,8 @@ pipeline {
         }
         stage('Build') {
             steps {
-				echo 'Building..'		
-				bat 'mvn clean package' 
-		        //bat "docker stop demo-webapp-staging demo-webapp-production"
-		        //bat "docker rm demo-webapp-staging demo-webapp-production"
-				bat "docker image build -t tapojitb/demo-webapp:${env.BUILD_ID} ."		    	
-		    	bat "docker container run -d  --name demo-webapp-staging -p 8383:8080 tapojitb/demo-webapp:${env.BUILD_ID}"		     	
-		    	bat "docker container run -d  --name demo-webapp-production -p 8484:8080 tapojitb/demo-webapp:${env.BUILD_ID}"
+			echo 'Building..'		
+			bat 'mvn clean package' 
             }
             post {
                 success {
@@ -33,10 +28,16 @@ pipeline {
         }
 		stage ('Deployments'){
 			parallel{
-				stage ('Static analysis'){
+				stage ('Deploy to Docker'){
 					steps {
 						echo 'Running Checkstyle....'
 						//build job: 'static analysis'
+						//bat "docker stop demo-webapp-staging demo-webapp-production"
+						//bat "docker rm demo-webapp-staging demo-webapp-production"
+						bat "docker image build -t tapojitb/demo-webapp:${env.BUILD_ID} ."		    	
+						bat "docker container run -d  --name demo-webapp-staging -p 8383:8080 tapojitb/demo-webapp:${env.BUILD_ID}"		     	
+						bat "docker container run -d  --name demo-webapp-production -p 8484:8080 tapojitb/demo-webapp:${env.BUILD_ID}"
+
 
 					}
 				}
@@ -47,7 +48,7 @@ pipeline {
 						build job: 'deploy-demo-to-staging'
 
 						}
-				 post {
+				 	post {
 						success {
 							echo 'Demo code deployed to Staging.'
 						}
